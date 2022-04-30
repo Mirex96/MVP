@@ -1,7 +1,6 @@
 package com.example.mvp
 
 
-
 class StoreRepository : StoreContract.Repository {
     private val persons = mutableListOf(
         Person(IdGenerator.generatorId(), "Mary", "24"),
@@ -11,13 +10,18 @@ class StoreRepository : StoreContract.Repository {
 
     override fun getPersons(): List<Person> = persons
 
+
     override fun onDelete(person: Person) {
         persons.remove(person)
     }
 
+    override fun onClone(person: Person) {
+        persons.add(person)
+    }
 
 
     companion object {
         fun create() = StoreRepository()
+
     }
 }

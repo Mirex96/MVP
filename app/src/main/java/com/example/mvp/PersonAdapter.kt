@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class PersonAdapter(
     private val onDelete: (Person) -> Unit,
+    private val onEdit: (Person) -> Unit,
+    private val onClone: (Person) -> Unit
 
 ) : RecyclerView.Adapter<PersonAdapter.PersonViewHolder>() {
 
@@ -39,6 +41,9 @@ class PersonAdapter(
 
             itemView.findViewById<View>(R.id.delete).setOnClickListener { onDelete(person) }
 //            itemView.findViewById<View>(R.id.moreBs).setOnClickListener { onMore(person) }
+
+            itemView.findViewById<View>(R.id.edit).setOnClickListener { onEdit(person) }
+            itemView.findViewById<View>(R.id.clone).setOnClickListener { onClone(person) }
         }
     }
 }

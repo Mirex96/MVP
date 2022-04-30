@@ -1,8 +1,10 @@
 package com.example.mvp
 
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+
 
 class StorePresenter private constructor(
     private val repository: StoreContract.Repository
@@ -29,14 +31,30 @@ class StorePresenter private constructor(
     }
 
 
-
-
     override fun load() {
         view?.showProgress()
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 replaceData()
             }, 3_000L
+        )
+    }
+
+
+    override fun onEdit(person: Person) {
+        view?.onEditView(person)
+
+
+
+    }
+
+    override fun onClone(person: Person) {
+        view?.showProgress()
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                repository.onClone(person)
+                replaceData()
+            }, 1_000L
 
         )
     }

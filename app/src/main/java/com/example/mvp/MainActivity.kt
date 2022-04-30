@@ -2,18 +2,20 @@ package com.example.mvp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 data class Person(
     val id: Int,
     val name: String,
     val age: String
-)
+) : Parcelable
 
 class MainActivity : AppCompatActivity(), StoreContract.View {
     private val personRecyclerView by lazy {
@@ -23,12 +25,17 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
     private val presenter: StoreContract.Presenter by lazy {
         StorePresenter.create(StoreRepository.create())
     }
-    private val adapter = PersonAdapter(presenter::onDelete)
+    private val adapter = PersonAdapter(
+        presenter::onDelete,
+        presenter::onEdit,
+        presenter::onClone
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
 
         personRecyclerView.adapter = adapter
@@ -42,6 +49,7 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
     }
 
     override fun showProgress() {
+
         progressBar.isVisible = true
     }
 
@@ -67,11 +75,13 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
         findViewById<View>(R.id.errorGroup).isVisible = false
     }
 
+    override fun onEditView(person: Person) {
+        presenter.onEdit(person)
+    }
+
     override fun onDestroy() {
         presenter.detach()
         super.onDestroy()
     }
 
 }
-
-
