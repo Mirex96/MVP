@@ -9,6 +9,7 @@ interface StoreContract {
         fun showError(reason: String)
         fun hideError()
         fun onEditView(person: Person)
+        fun onShowAddPerson(person: Person)
         fun showAction(person: Person)
         fun showOnSelect(person: Person)
     }
@@ -24,6 +25,8 @@ interface StoreContract {
         fun onClone(person: Person)
         fun onMore(person: Person)
         fun onPersonEdited(person: Person)
+
+        fun onAddPerson(person: Person)
 
         fun onSelect(person: Person)
 

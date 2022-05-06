@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -15,6 +16,8 @@ import kotlinx.parcelize.Parcelize
 const val EDIT_KEY = "EDIT_KEY"
 const val EDIT_REQUEST_KEY = 100
 const val KEY_SELECT = "KEY_SELECT"
+const val KEY_ADD = "KEY_ADD"
+const val KEY_REQUEST_ADD = 101
 
 
 @Parcelize
@@ -32,6 +35,7 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
     private val presenter: StoreContract.Presenter by lazy {
         StorePresenter.create(StoreRepository.create())
     }
+    private lateinit var addPerson: ImageView
     private val adapter = PersonAdapter(
         presenter::onDelete,
         presenter::onEdit,
@@ -45,10 +49,10 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         personRecyclerView.adapter = adapter
         progressBar = findViewById(R.id.progress)
+        addPerson = findViewById(R.id.addPerson)
+
         findViewById<View>(R.id.reload).setOnClickListener { presenter.load() }
 
         presenter.attach(this)
@@ -57,8 +61,7 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
 
         supportFragmentManager
             .setFragmentResultListener(REQUEST_KEY_BS, this) { _, bundle ->
-                val action = bundle.getSerializable(BUNDLE_KEY_TYPE) as BottomSheetDialogAction
-                when (action) {
+                when (bundle.getSerializable(BUNDLE_KEY_TYPE) as BottomSheetDialogAction) {
                     DELETE -> {}
                     CLONE -> {}
                     EDIT -> {}
@@ -74,7 +77,6 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
 
 
     override fun showProgress() {
-
         progressBar.isVisible = true
     }
 
@@ -106,6 +108,15 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
         startActivityForResult(intent, EDIT_REQUEST_KEY)
     }
 
+    override fun onShowAddPerson(person: Person) {
+        addPerson.isVisible = true
+        val intent = Intent(this, AddActivity::class.java)
+        intent.putExtra(KEY_ADD, person)
+        startActivityForResult(intent, KEY_REQUEST_ADD)
+
+
+    }
+
     override fun showAction(person: Person) {
         BottomSheetDialog.show(supportFragmentManager)
     }
@@ -126,6 +137,7 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == EDIT_REQUEST_KEY && resultCode == RESULT_OK && data != null) {
             val editPerson = data.getParcelableExtra<Person>(EDIT_KEY) ?: return
+
 
         }
     }

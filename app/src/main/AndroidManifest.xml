@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MVP">
         <activity
+            android:name=".AddActivity"
+            android:exported="false" />
+        <activity
             android:name=".SelectActivity"
             android:exported="false" />
         <activity

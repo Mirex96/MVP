@@ -82,10 +82,6 @@ class StorePresenter private constructor(
     }
 
     override fun onMore(person: Person) {
-        if (state == LOADING) {
-            return
-        }
-        state = LOADING
         view?.showProgress()
         Handler(Looper.getMainLooper()).postDelayed(
             {
@@ -99,6 +95,17 @@ class StorePresenter private constructor(
 
     override fun onPersonEdited(person: Person) {
         view?.onEditView(person)
+    }
+
+    override fun onAddPerson(person: Person) {
+        view?.showProgress()
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                view?.onShowAddPerson(person)
+                replaceData()
+            }, 1_000L
+
+        )
     }
 
     override fun onSelect(person: Person) {
