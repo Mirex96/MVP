@@ -1,5 +1,6 @@
 package com.example.mvp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
@@ -8,7 +9,13 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mvp.BottomSheetDialogAction.*
 import kotlinx.parcelize.Parcelize
+
+const val EDIT_KEY = "EDIT_KEY"
+const val EDIT_REQUEST_KEY = 100
+const val KEY_SELECT = "KEY_SELECT"
+
 
 @Parcelize
 data class Person(
@@ -28,7 +35,9 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
     private val adapter = PersonAdapter(
         presenter::onDelete,
         presenter::onEdit,
-        presenter::onClone
+        presenter::onClone,
+        presenter::onMore,
+        presenter::onSelect
     )
 
 
@@ -46,7 +55,23 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
         presenter.load()
 
 
+        supportFragmentManager
+            .setFragmentResultListener(REQUEST_KEY_BS, this) { _, bundle ->
+                val action = bundle.getSerializable(BUNDLE_KEY_TYPE) as BottomSheetDialogAction
+                when (action) {
+                    DELETE -> {}
+                    CLONE -> {}
+                    EDIT -> {}
+                    EXIT -> {
+//                        exit()
+                    }
+                    SELECT -> {}
+
+                }
+            }
+
     }
+
 
     override fun showProgress() {
 
@@ -76,12 +101,36 @@ class MainActivity : AppCompatActivity(), StoreContract.View {
     }
 
     override fun onEditView(person: Person) {
-        presenter.onEdit(person)
+        val intent = Intent(this, EditActivity::class.java)
+        intent.putExtra(EDIT_KEY, person)
+        startActivityForResult(intent, EDIT_REQUEST_KEY)
     }
+
+    override fun showAction(person: Person) {
+        BottomSheetDialog.show(supportFragmentManager)
+    }
+
+    override fun showOnSelect(person: Person) {
+        val intent = Intent(this, SelectActivity::class.java)
+        intent.putExtra(KEY_SELECT, person)
+        startActivity(intent)
+    }
+
 
     override fun onDestroy() {
         presenter.detach()
         super.onDestroy()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == EDIT_REQUEST_KEY && resultCode == RESULT_OK && data != null) {
+            val editPerson = data.getParcelableExtra<Person>(EDIT_KEY) ?: return
+
+        }
+    }
+
+
 }
+
+

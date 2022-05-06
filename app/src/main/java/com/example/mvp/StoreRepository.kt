@@ -1,6 +1,8 @@
 package com.example.mvp
 
 
+
+
 class StoreRepository : StoreContract.Repository {
     private val persons = mutableListOf(
         Person(IdGenerator.generatorId(), "Mary", "24"),
@@ -17,6 +19,10 @@ class StoreRepository : StoreContract.Repository {
 
     override fun onClone(person: Person) {
         persons.add(person)
+    }
+
+    override fun onEdit(person: Person) {
+
     }
 
 

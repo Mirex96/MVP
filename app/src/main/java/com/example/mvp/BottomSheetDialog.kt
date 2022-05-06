@@ -67,7 +67,7 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val TAG = "DIALOG"
+        private const val TAG = "DIALOG"
         fun show(fragmentManager: FragmentManager) {
             if (fragmentManager.findFragmentByTag(TAG) == null)
                 BottomSheetDialog()

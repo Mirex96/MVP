@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:text="delete"
+        android:textColor="@color/cardview_dark_background"
         app:layout_constraintStart_toEndOf="@+id/imageBs"
         app:layout_constraintTop_toTopOf="@+id/imageBs" />
 
@@ -38,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="edit"
+        android:textColor="@color/cardview_dark_background"
         app:layout_constraintStart_toStartOf="@+id/deleteBs"
         app:layout_constraintTop_toBottomOf="@+id/deleteBs" />
 
@@ -47,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:text="clone"
+        android:textColor="@color/cardview_dark_background"
         app:layout_constraintStart_toEndOf="@+id/deleteBs"
         app:layout_constraintTop_toTopOf="@+id/deleteBs" />
 
@@ -55,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="select"
+        android:textColor="@color/cardview_dark_background"
         app:layout_constraintStart_toStartOf="@+id/cloneBs"
         app:layout_constraintTop_toBottomOf="@+id/cloneBs" />
 
